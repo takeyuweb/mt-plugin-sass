@@ -1,0 +1,54 @@
+<?php
+
+$mt_dir       = '<$MTCGIServerPath$>';
+
+set_include_path(get_include_path() . PATH_SEPARATOR . $mt_dir.DIRECTORY_SEPARATOR.'php');
+
+
+$cmd_ruby     = '<$MTSassSetting name="cmd_ruby"$>';
+$cache_location = '<$MTSassSetting name="sass_cache_dir"$>';
+
+$plugin_path  = $mt_dir.DIRECTORY_SEPARATOR.'plugins'.DIRECTORY_SEPARATOR .'Sass';
+$command = $plugin_path . DIRECTORY_SEPARATOR . 'vendor'.DIRECTORY_SEPARATOR.'sass'.DIRECTORY_SEPARATOR.'bin'.DIRECTORY_SEPARATOR.'sass';
+$command = escapeshellcmd( $command );
+$load_path = '<$MTSassLoadPath$>';
+
+$src = get_request_path();
+if ( is_null( $src )  ) {
+    header("Status: 404 Not Found");
+} else {
+    $data = pathinfo($src);
+    $dst = $data['dirname'] . DIRECTORY_SEPARATOR . basename($data['basename'], '.'.$data['extension']) . '.css';
+    $type_option = $data['extension'] == 'scss' ? '--scss' : '';
+
+    exec( "$cmd_ruby $command --cache-location ".escapeshellarg($cache_location)." --unix-newlines --style compressed --load-path ".escapeshellarg($load_path)." $type_option ".escapeshellarg($src)." ".escapeshellarg($dst), $output, $return_var );
+    if ($return_var != 0) {
+        header("Status: 500 Internal Server Error");
+    } else {
+        $contents = @file_get_contents( $dst );
+
+        header( 'Content-type: text/css' );
+        echo $contents;
+    }
+}
+
+function get_request_path() {
+    require_once('mt.php');
+    $cfg_file = 'mt-config.cgi';
+    $mt = MT::get_instance(null, $cfg_file);
+    require_once('class.mt_fileinfo.php');
+    
+    $fileinfo_class = new FileInfo;
+
+    $extras['limit'] = 1;
+
+    $fileinfo = ($fileinfo_class->Find('fileinfo_archive_type = "index" AND fileinfo_url = "' . $mt->db()->escape($_SERVER['REQUEST_URI']) . '"', false, false, $extras));
+    $fileinfo = $fileinfo[0];
+    if ( $fileinfo ) {
+        return $fileinfo->file_path;
+    } else {
+        return null;
+    }
+}
+
+?>

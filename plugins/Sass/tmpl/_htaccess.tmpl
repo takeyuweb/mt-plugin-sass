@@ -1,0 +1,6 @@
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{REQUEST_FILENAME} -f
+  RewriteCond %{REQUEST_FILENAME} ^.+\.(scss|sass)$ [NC]
+  RewriteRule ^ <$MTWebsiteRelativeURL$>.sass.php [L]
+</IfModule>

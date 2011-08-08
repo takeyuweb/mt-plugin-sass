@@ -1,0 +1,35 @@
+l10n_class: Sass::L10N
+id: Sass
+key: sass
+name: Sass
+version: 0.0.1
+author_name: Yuichi Takeuchi
+author_link: http://takeyu-web.com/
+description: <__trans phrase="_PLUGIN_DESCRIPTION">
+
+system_config_template: sass_sysconfig.tmpl
+config_template: sass_config.tmpl
+
+callbacks:
+  template_source.sass_config: $sass::Sass::Callbacks::hdlr_template_source_sass_config
+
+applications:
+  cms:
+    methods:
+      install_sass_templates: $sass::Sass::CMS::hdlr_install_sass_templates
+
+settings:
+  cmd_ruby:
+    scope: system
+    default: /usr/bin/env ruby
+  sass_cache_dir:
+    scope: system
+    default: /tmp/sass-cache
+  sass_load_path:
+    scope: blog
+    default: 
+
+tags:
+  function:
+    SassSetting: $sass::Sass::Tags::hdlr_sass_setting
+    SassLoadPath: $sass::Sass::Tags::hdlr_load_path

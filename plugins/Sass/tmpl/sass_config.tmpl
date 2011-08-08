@@ -1,0 +1,14 @@
+<mtapp:setting
+   id="install_templates"
+   show_hint="1"
+   hint="<__trans phrase="Install 'Sass compiler' and 'Sass .htaccess' Index Templates.(required)" />">
+  <a class="mt-open-dialog" href="<$MTAdminScript$>?__mode=install_sass_templates&blog_id=[blog_id]"><__trans phrase="Install Templates." /></a>
+</mtapp:setting>
+
+<mtapp:setting
+   id="sass_load_path"
+   label="<__trans phrase="Sass load_path">:"
+   show_hint="1"
+   hint="<__trans phrase="Additional search directories.(default:BlogSitePath)" />">
+  <input type="text" name="sass_load_path" value="<mt:var name="sass_load_path" encode_html="1" />" class="full-width" /><br />
+</mtapp:setting>
