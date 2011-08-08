@@ -49,4 +49,4 @@ Hampton Catlin, Nathan Weizenbaum, Chris Eppstein, and numerous contributors. It
 
 ## ご注意
 * 無保証です。このプラグインを使用したことでいかなる損害が発生しても、制作者は一切責任を負いません。
-* すべての携帯電話などから正しく投稿できることを保証するものではありません。そもそもきちんと動くことも保証しません。
+
